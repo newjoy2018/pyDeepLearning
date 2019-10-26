@@ -88,3 +88,33 @@ history = model.fit_generator(train_generator,
                              epochs=100,
                              validation_data=validation_generator,
                              validation_steps=50)
+#-----下面画acc/loss图-----------------------------------------------------------
+import matplotlib.pyplot as plt
+
+acc = history.history['acc']
+val_acc = history.history['val_acc']
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+
+epochs = range(1, len(acc)+1)
+
+plt.plot(epochs, acc, 'bo', label='Trainging acc')
+plt.plot(epochs, val_acc, 'b', label='Validation acc')
+plt.title('Trainging and Validation Accuracy')
+plt.legend()
+
+plt.figure()
+
+plt.plot(epochs, loss, 'bo', label='Training loss')
+plt.plot(epochs, val_loss, 'b', label='Validation loss')
+plt.title('Trainging and Validation Loss')
+plt.legend()
+
+plt.show()
+
+#-----测试模型精度----------------------------------------------------------------
+test_generator = test_datagen.flow_from_directory(test_dir,target_size=(150, 150),batch_size=20,class_mode='binary')
+test_loss, test_acc = model.evaluate_generator(test_generator, steps=50)
+print('test_acc: ', test_acc)
+#-----保存模型--------------------------------------------------------------------
+model.save('VGG16_catsNdogs_small_5.h5')
