@@ -22,13 +22,13 @@ plt.show()
 
 from keras import models
 
-layer_outputs = [layer.output for layer in model.layers[:6]]
+layer_outputs = [layer.output for layer in model.layers[:6]]      #提取前6层的输出
 activation_model = models.Model(inputs=model.input, outputs=layer_outputs)
 
 activations = activation_model.predict(img_tensor)
 first_layer_activation = activations[0]
-print(first_layer_activation.shape)
+print(first_layer_activation.shape)   #打印第一个卷积层的激活
 
 import matplotlib.pyplot as plt
 
-plt.matshow(first_layer_activation[0,:,:,4], cmap='viridis')
+plt.matshow(first_layer_activation[0,:,:,4], cmap='viridis')    #绘制第4个通道
