@@ -58,10 +58,10 @@ for layer_name, layer_activation in zip(layer_names, activations):
             channel_image = np.clip(channel_image, 0, 255).astype('uint8')
             display_grid[col * size : (col+1) * size,
                          row * size : (row+1) * size] = channel_image
-        scale = 1./ size
-        plt.figure(figsize=(scale * display_grid.shape[1],scale * display_grid.shape[0]))
-        plt.title(layer_name)
-        plt.grid(False)
-        plt.imshow(display_grid, aspect='auto', cmap='viridis')
+    scale = 1./ size
+    plt.figure(figsize=(scale * display_grid.shape[1],scale * display_grid.shape[0]))
+    plt.title(layer_name)
+    plt.grid(False)
+    plt.imshow(display_grid, aspect='auto', cmap='viridis')
 
 #-------------------------------------------------------------------------------------------------
