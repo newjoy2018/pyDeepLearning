@@ -30,3 +30,27 @@ plt.imshow(color_select)
 plt.show()
 
 #-----------------------------------------------------------------#
+left_bottom = [100, 539]
+right_bottom = [900, 539]
+apex = [475, 250]
+
+fit_left = np.polyfit((left_bottom[0], apex[0]), (left_bottom[1], apex[1]), 1)
+fit_right = np.polyfit((right_bottom[0], apex[0]), (right_bottom[1], apex[1]), 1)
+fit_bottom = np.polyfit((left_bottom[0], right_bottom[0]), (left_bottom[1], right_bottom[1]), 1)
+
+# Find the region inside the lines
+XX, YY = np.meshgrid(np.arange(0, xsize), np.arange(0, ysize))
+region_thresholds = (YY > (XX*fit_left[0] + fit_left[1])) & \
+                    (YY > (XX*fit_right[0] + fit_right[1])) & \
+                    (YY < (XX*fit_bottom[0] + fit_bottom[1]))
+
+# Color pixels red which are inside the region of interest
+color_select[color_thresholds | ~region_thresholds] = [0, 0, 0]
+
+# Find where image is both colored right and in the region
+line_image[~color_thresholds & region_thresholds] = [0,255,0]
+
+# Display our two output images
+plt.imshow(color_select)
+plt.show()
+plt.imshow(line_image)
