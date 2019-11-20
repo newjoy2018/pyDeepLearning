@@ -199,3 +199,27 @@ img_lanes_ext = weighted_img(img=extrapolated, initial_img=img, a = 0.8, b=1)
 plt.imshow(img_lanes_ext)
 
 ##--------------------------------------------------------------------------##
+
+from moviepy.editor import VideoFileClip
+
+def process_image(image):
+    s = image.shape
+    img_gray = grayscale(image)
+    img_blur = gaussian_blur(img_gray, kernel_size=5)
+    img_edge = canny(img_gray, low_threshold=50, high_threshold=100)
+    vertices = np.array([[(s[1]*0.2, s[0]), (s[1]*0.4, s[0]*0.6), (s[1]*0.55, s[0]*0.6), (s[1], s[0])]], dtype=np.int32)
+    
+    masked_edges = region_of_interest(img_edge, vertices)
+    extra = hough_lines(masked_edges, rho=1, theta=np.pi/180, threshold=40, min_line_len=10, max_line_gap=70, extrapolate=True)
+    
+    img_lanes_ext = weighted_img(img=extra, initial_img=image, a = 0.8, b=1)
+    return img_lanes_ext
+
+##--------------------------------------------------------------------------##
+
+v1_out = 'white.mp4'
+clip1 = VideoFileClip('solidYellowLeft.mp4')
+v1_clip = clip1.fl_image(process_image)
+%time v1_clip.write_videofile(v1_out, audio=False)
+
+##--------------------------------------------------------------------------##
