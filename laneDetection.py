@@ -223,3 +223,5 @@ v1_clip = clip1.fl_image(process_image)
 %time v1_clip.write_videofile(v1_out, audio=False)
 
 ##--------------------------------------------------------------------------##
+# from moviepy.editor import VideoFileClip出问题时，重新安装moviepy并用以下命令解决
+# pip install moviepy --ignore-install imageio --user
