@@ -36,3 +36,14 @@ def process_image(image):
     # Find where image is both colored right and in the region
     line_image[~color_thresholds & region_thresholds] = [0,255,0]
     return line_image
+
+#--------------------------------------------------------------------#
+
+from moviepy.editor import VideoFileClip
+
+v1_out = 'masked_colored_solidWhiteRight.mp4'
+clip1 = VideoFileClip('solidWhiteRight.mp4')
+v1_clip = clip1.fl_image(process_image)
+%time v1_clip.write_videofile(v1_out, audio=False)
+
+#--------------------------------------------------------------------#
